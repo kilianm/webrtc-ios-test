@@ -38,9 +38,9 @@ namespace webrtc {
 class RTCPeerConnectionObserver : public PeerConnectionObserver {
 
  public:
-  explicit RTCPeerConnectionObserver(id<RTCPeerConnectionDelegate> delegate);
+  explicit RTCPeerConnectionObserver(__weak id<RTCPeerConnectionDelegate> delegate);
 
-  void SetPeerConnection(RTCPeerConnection *peerConnection);
+  void SetPeerConnection(__weak RTCPeerConnection *peerConnection);
 
   virtual void OnError() OVERRIDE;
 
@@ -57,7 +57,7 @@ class RTCPeerConnectionObserver : public PeerConnectionObserver {
   // Triggered when a remote peer open a data channel.
   virtual void OnDataChannel(DataChannelInterface* data_channel) OVERRIDE;
 
-  // Triggered when renegotiation is needed, for example the ICE has restarted.
+  // Triggered when renegotation is needed, for example the ICE has restarted.
   virtual void OnRenegotiationNeeded() OVERRIDE;
 
   // Called any time the ICEConnectionState changes
@@ -72,8 +72,8 @@ class RTCPeerConnectionObserver : public PeerConnectionObserver {
   virtual void OnIceCandidate(const IceCandidateInterface* candidate) OVERRIDE;
 
  private:
-  id<RTCPeerConnectionDelegate> _delegate;
-  RTCPeerConnection *_peerConnection;
+  __weak id<RTCPeerConnectionDelegate> _delegate;
+  __weak RTCPeerConnection *_peerConnection;
 };
 
 } // namespace webrtc

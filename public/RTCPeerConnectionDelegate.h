@@ -32,6 +32,7 @@
 @class RTCICECandidate;
 @class RTCMediaStream;
 @class RTCPeerConnection;
+@class RTCDataChannel;
 
 // RTCPeerConnectionDelegate is a protocol for an object that must be
 // implemented to get messages from PeerConnection.
@@ -52,7 +53,10 @@
 - (void)peerConnection:(RTCPeerConnection *)peerConnection
         removedStream:(RTCMediaStream *)stream;
 
-// Triggered when renegotiation is needed, for example the ICE has restarted.
+- (void)peerConnection:(RTCPeerConnection *)peerConnection
+        addedDataChannel:(RTCDataChannel *)dataChannel;
+
+// Triggered when renegotation is needed, for example the ICE has restarted.
 - (void)peerConnectionOnRenegotiationNeeded:(RTCPeerConnection *)peerConnection;
 
 // Called any time the ICEConnectionState changes.

@@ -69,8 +69,8 @@
 
 // TODO(hughv):  When capturer is implemented, this needs to return
 // _capturer.release() instead.  For now, this isn't used.
-- (const talk_base::scoped_ptr<cricket::VideoCapturer> &)capturer {
-  return _capturer;
+- (cricket::VideoCapturer *)capturer {
+  return _capturer.release();
 }
 
 @end

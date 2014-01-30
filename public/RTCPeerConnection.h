@@ -33,6 +33,7 @@
 @class RTCMediaStream;
 @class RTCSessionDescription;
 @protocol RTCSessionDescriptonDelegate;
+@class RTCDataChannel;
 
 // RTCPeerConnection is an ObjectiveC friendly wrapper around a PeerConnection
 // object.  See the documentation in talk/app/webrtc/peerconnectioninterface.h.
@@ -65,6 +66,9 @@
 // Note that a SessionDescription negotiation is need before the
 // remote peer is notified.
 - (void)removeStream:(RTCMediaStream *)stream;
+
+
+- (RTCDataChannel *)createDataChannelWithLabel:(NSString *)label ordered:(BOOL)ordered;
 
 // Create a new offer.
 // Success or failure will be reported via RTCSessionDescriptonDelegate.

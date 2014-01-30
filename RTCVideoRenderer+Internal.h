@@ -28,13 +28,11 @@
 #import "RTCVideoRenderer.h"
 
 #include "talk/app/webrtc/mediastreaminterface.h"
+#include "talk/base/scoped_ptr.h"
 
 @interface RTCVideoRenderer (Internal)
 
-// TODO(hughv): Use smart pointer.
-@property(nonatomic, assign, readonly)
-    webrtc::VideoRendererInterface *videoRenderer;
-
 - (id)initWithVideoRenderer:(webrtc::VideoRendererInterface *)videoRenderer;
+- (webrtc::VideoRendererInterface *)videoRenderer;
 
 @end

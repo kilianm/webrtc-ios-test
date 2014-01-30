@@ -39,6 +39,8 @@
 #import "RTCSessionDescription+internal.h"
 #import "RTCSessionDescriptonDelegate.h"
 #import "RTCSessionDescription.h"
+#import "RTCDataChannel.h"
+#import "RTCDataChannel+internal.h"
 
 #include "talk/app/webrtc/jsep.h"
 
@@ -112,14 +114,14 @@ class RTCSetSessionDescriptionObserver : public SetSessionDescriptionObserver {
 
 @implementation RTCPeerConnection {
   NSMutableArray *_localStreams;
-  talk_base::scoped_ptr<webrtc::RTCPeerConnectionObserver>_observer;
+  talk_base::scoped_ptr<webrtc::RTCPeerConnectionObserver> _observer;
   talk_base::scoped_refptr<webrtc::PeerConnectionInterface> _peerConnection;
 }
 
 - (BOOL)addICECandidate:(RTCICECandidate *)candidate {
-  talk_base::scoped_ptr<const webrtc::IceCandidateInterface> iceCandidate(
-      candidate.candidate);
-  return self.peerConnection->AddIceCandidate(iceCandidate.get());
+  const webrtc::IceCandidateInterface *iceCandidate = candidate.candidate;
+  return self.peerConnection->AddIceCandidate(iceCandidate);
+  delete iceCandidate;
 }
 
 - (BOOL)addStream:(RTCMediaStream *)stream
@@ -131,6 +133,16 @@ class RTCSetSessionDescriptionObserver : public SetSessionDescriptionObserver {
   }
   [_localStreams addObject:stream];
   return YES;
+}
+
+- (RTCDataChannel *)createDataChannelWithLabel:(NSString *)label ordered:(BOOL)ordered {
+  
+  webrtc::DataChannelInit config;
+  config.ordered = ordered;
+  
+  talk_base::scoped_refptr<webrtc::DataChannelInterface> dataChannel = self.peerConnection->CreateDataChannel([label UTF8String], &config);
+  
+  return [[RTCDataChannel alloc] initWithDataChannel:dataChannel];
 }
 
 - (void)createAnswerWithDelegate:(id<RTCSessionDescriptonDelegate>)delegate

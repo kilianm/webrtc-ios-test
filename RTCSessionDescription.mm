@@ -31,10 +31,10 @@
 
 #import "RTCSessionDescription+internal.h"
 
-@implementation RTCSessionDescription
-
-@synthesize description = _description;
-@synthesize type = _type;
+@implementation RTCSessionDescription {
+  NSString *_description;
+  NSString *_type;
+}
 
 - (id)initWithType:(NSString *)type sdp:(NSString *)sdp {
   if (!type || !sdp) {

@@ -64,8 +64,6 @@
 
 @implementation RTCPeerConnectionFactory
 
-@synthesize nativeFactory = _nativeFactory;
-
 + (void)initializeSSL {
   BOOL initialized = talk_base::InitializeSSL();
   NSAssert(initialized, @"Failed to initialize SSL library");
@@ -89,7 +87,7 @@
 - (RTCPeerConnection *)
     peerConnectionWithICEServers:(NSArray *)servers
                      constraints:(RTCMediaConstraints *)constraints
-                        delegate:(id<RTCPeerConnectionDelegate>)delegate {
+                        delegate:(__weak id<RTCPeerConnectionDelegate>)delegate {
   webrtc::PeerConnectionInterface::IceServers iceServers;
   for (RTCICEServer *server in servers) {
     iceServers.push_back(server.iceServer);
@@ -120,7 +118,7 @@
     return nil;
   }
   talk_base::scoped_refptr<webrtc::VideoSourceInterface> source =
-      self.nativeFactory->CreateVideoSource(capturer.capturer.get(),
+      self.nativeFactory->CreateVideoSource(capturer.capturer,
                                             constraints.constraints);
   return [[RTCVideoSource alloc] initWithMediaSource:source];
 }

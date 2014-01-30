@@ -33,17 +33,18 @@
 
 #import "RTCICECandidate+internal.h"
 #import "RTCMediaStream+internal.h"
+#import "RTCDataChannel+internal.h"
 #import "RTCEnumConverter.h"
 
 namespace webrtc {
 
 RTCPeerConnectionObserver::RTCPeerConnectionObserver(
-    id<RTCPeerConnectionDelegate> delegate) {
+    __weak id<RTCPeerConnectionDelegate> delegate) {
   _delegate = delegate;
 }
 
 void RTCPeerConnectionObserver::SetPeerConnection(
-    RTCPeerConnection *peerConnection) {
+    __weak RTCPeerConnection *peerConnection) {
   _peerConnection = peerConnection;
 }
 
@@ -72,7 +73,8 @@ void RTCPeerConnectionObserver::OnRemoveStream(MediaStreamInterface* stream) {
 
 void RTCPeerConnectionObserver::OnDataChannel(
     DataChannelInterface* data_channel) {
-  // TODO(hughv): Implement for future version.
+  talk_base::scoped_refptr<webrtc::DataChannelInterface> dataChannel(data_channel);
+  [_delegate peerConnection:_peerConnection addedDataChannel:[[RTCDataChannel alloc] initWithDataChannel:dataChannel]];
 }
 
 void RTCPeerConnectionObserver::OnRenegotiationNeeded() {

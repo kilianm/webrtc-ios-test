@@ -31,7 +31,7 @@
 
 @interface RTCVideoCapturer (Internal)
 
-@property(nonatomic, assign, readonly) const talk_base::scoped_ptr<cricket::VideoCapturer> &capturer;
+@property(nonatomic, assign, readonly) cricket::VideoCapturer *capturer;
 
 - (id)initWithCapturer:(cricket::VideoCapturer*)capturer;
 

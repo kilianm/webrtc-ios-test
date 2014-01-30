@@ -50,7 +50,7 @@
 - (RTCPeerConnection *)
     peerConnectionWithICEServers:(NSArray *)servers
                      constraints:(RTCMediaConstraints *)constraints
-                        delegate:(id<RTCPeerConnectionDelegate>)delegate;
+                        delegate:(__weak id<RTCPeerConnectionDelegate>)delegate;
 
 // Create an RTCMediaStream named |label|.
 - (RTCMediaStream *)mediaStreamWithLabel:(NSString *)label;
